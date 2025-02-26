@@ -1,0 +1,100 @@
+---
+title: "PIB"
+subtitle: "Tasas de crecimiento anuales y trimestrales"
+author: "Miguel Martinez"
+date: today
+format: 
+  html:
+    toc: true
+    theme: cosmo
+editor: visual
+execute:
+  warning: false
+---
+
+This document presents the process of constructing the graph of the evolution of the annual and quarterly Colombian GDP. The data is made public by the Departamento Administrativo Nacional de Estadística ([DANE](https://www.dane.gov.co/)), and you can reproduce this exercise downloading the data [here](https://www.dane.gov.co/index.php/estadisticas-por-tema/cuentas-nacionales).
+
+The first step is loading the required packages:
+
+```{r}
+
+library(readxl)
+library(tidyverse)
+
+```
+
+## Load data
+
+```{r}
+
+data = read_excel("PIB trimestral_2020_2024.xlsx")
+
+data
+```
+
+```{r}
+
+data2 = read_excel("PIB anual_2006_2024.xlsx")
+
+data2
+```
+
+Now we reshape the data to the *long* or *stacked* format:
+
+```{r}
+
+data = pivot_longer(data, cols = 3:4, names_to = "PIB",
+                    values_to = "value")
+
+data
+```
+
+## Quarterly
+
+```{r}
+
+dashline = 0   # Baseline
+
+ggplot(data) +
+  geom_point(aes(x = Trimestre, y = value, colour = PIB, group = 2)) +
+  geom_line(aes(x = Trimestre, y = value, colour = PIB, group = 2)) +
+  geom_hline(yintercept = dashline, color = "black", linewidth = 0.5, linetype = 2) +
+  facet_grid( . ~ Año) +
+  theme_classic() +
+  labs(title = "Producto interno bruto",
+       subtitle = "Tasas de crecimiento anual en volumen",
+       x = "Trimestres",
+       y = "Variación (%)",
+       caption = "Fuente: Elaboración propia con datos del DANE, PIB trimestral (coyuntural). A precios constantes") +
+  theme(plot.caption.position = "panel",
+        plot.caption = element_text(hjust = 0))
+
+```
+
+## Annually
+
+```{r}
+
+dashline = 0       # Baseline
+shadedarea = 2020  # Year of interest
+
+data2 |> 
+  ggplot(aes(x = Año, y = `Producto interno bruto`)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = dashline, color = "black", linewidth = 0.5, linetype = 2) +
+  geom_vline(xintercept = shadedarea, col = "grey", linewidth = 22, alpha = 0.4) +
+  scale_x_continuous(breaks = seq(2006, 2024, by = 2)) +
+  theme_bw() +
+  labs(title = "Producto interno bruto",
+       subtitle = "(variación anual)",
+       x = "Año",
+       y = "Variación (%)",
+       caption = "Fuente: Elaboración propia con datos del DANE, tasa de crecimiento en volumen") +
+  theme(plot.caption.position = "panel",
+        plot.caption = element_text(hjust = 0))
+```
+
+## Conclusion
+
+We can see that the Colombian GDP is exposing signals of recovering from the pandemic shock. In the last quarters the growth is significant and positive but for now not enough for the expectation of 3% or higher displayed a decade before.
