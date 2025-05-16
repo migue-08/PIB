@@ -2,35 +2,35 @@
   {
     "objectID": "PIB.html",
     "href": "PIB.html",
-    "title": "PIB",
+    "title": "GDP",
     "section": "",
     "text": "This document presents the process of constructing the graph of the evolution of the annual and quarterly Colombian GDP. The data is made public by the Departamento Administrativo Nacional de Estadística (DANE), and you can reproduce this exercise downloading the data here.\nThe first step is loading the required packages:\nlibrary(readxl)\nlibrary(tidyverse)"
   },
   {
     "objectID": "PIB.html#load-data",
     "href": "PIB.html#load-data",
-    "title": "PIB",
+    "title": "GDP",
     "section": "Load data",
     "text": "Load data\n\ndata = read_excel(\"PIB trimestral_2020_2025.xlsx\")\n\ndata\n\n# A tibble: 24 × 4\n     Año Trimestre original estacional\n   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;\n 1  2020 I            0.351      0.352\n 2  2020 II         -16.7      -16.7  \n 3  2020 III         -9.08      -9.00 \n 4  2020 IV          -3.33      -3.36 \n 5  2021 I            1.47       1.55 \n 6  2021 II          18.4       18.5  \n 7  2021 III         13.3       13.5  \n 8  2021 IV          11.1       11.1  \n 9  2022 I            8.23       8.11 \n10  2022 II          12.3       12.1  \n# ℹ 14 more rows\n\n\n\ndata2 = read_excel(\"PIB anual_2006_2024.xlsx\")\n\ndata2\n\n# A tibble: 19 × 2\n     Año `Producto interno bruto`\n   &lt;dbl&gt;                    &lt;dbl&gt;\n 1  2006                    6.72 \n 2  2007                    6.74 \n 3  2008                    3.28 \n 4  2009                    1.14 \n 5  2010                    4.49 \n 6  2011                    6.95 \n 7  2012                    3.91 \n 8  2013                    5.13 \n 9  2014                    4.50 \n10  2015                    2.96 \n11  2016                    2.09 \n12  2017                    1.36 \n13  2018                    2.56 \n14  2019                    3.19 \n15  2020                   -7.19 \n16  2021                   10.8  \n17  2022                    7.33 \n18  2023                    0.712\n19  2024                    1.7  \n\n\nNow we reshape the data to the long or stacked format:\n\ndata = pivot_longer(data, cols = 3:4, names_to = \"PIB\",\n                    values_to = \"value\")\n\ndata\n\n# A tibble: 48 × 4\n     Año Trimestre PIB          value\n   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;\n 1  2020 I         original     0.351\n 2  2020 I         estacional   0.352\n 3  2020 II        original   -16.7  \n 4  2020 II        estacional -16.7  \n 5  2020 III       original    -9.08 \n 6  2020 III       estacional  -9.00 \n 7  2020 IV        original    -3.33 \n 8  2020 IV        estacional  -3.36 \n 9  2021 I         original     1.47 \n10  2021 I         estacional   1.55 \n# ℹ 38 more rows"
   },
   {
     "objectID": "PIB.html#quarterly",
     "href": "PIB.html#quarterly",
-    "title": "PIB",
+    "title": "GDP",
     "section": "Quarterly",
     "text": "Quarterly\n\ndashline = 0   # Baseline\n\nggplot(data) +\n  geom_point(aes(x = Trimestre, y = value, colour = PIB, group = 2)) +\n  geom_line(aes(x = Trimestre, y = value, colour = PIB, group = 2)) +\n  geom_hline(yintercept = dashline, color = \"black\", linewidth = 0.5, linetype = 2) +\n  facet_grid( . ~ Año) +\n  theme_classic() +\n  labs(title = \"Producto interno bruto\",\n       subtitle = \"Tasas de crecimiento anual en volumen\",\n       x = \"Trimestres\",\n       y = \"Variación (%)\",\n       caption = \"Fuente: Elaboración propia con datos del DANE, PIB trimestral (coyuntural). A precios constantes\") +\n  theme(plot.caption.position = \"panel\",\n        plot.caption = element_text(hjust = 0))"
   },
   {
     "objectID": "PIB.html#annually",
     "href": "PIB.html#annually",
-    "title": "PIB",
+    "title": "GDP",
     "section": "Annually",
     "text": "Annually\n\ndashline = 0       # Baseline\nshadedarea = 2020  # Year of interest\n\ndata2 |&gt; \n  ggplot(aes(x = Año, y = `Producto interno bruto`)) +\n  geom_point() +\n  geom_line() +\n  geom_hline(yintercept = dashline, color = \"black\", linewidth = 0.5, linetype = 2) +\n  geom_vline(xintercept = shadedarea, col = \"grey\", linewidth = 22, alpha = 0.4) +\n  scale_x_continuous(breaks = seq(2006, 2024, by = 2)) +\n  theme_bw() +\n  labs(title = \"Producto interno bruto\",\n       subtitle = \"(variación anual)\",\n       x = \"Año\",\n       y = \"Variación (%)\",\n       caption = \"Fuente: Elaboración propia con datos del DANE, tasa de crecimiento en volumen\") +\n  theme(plot.caption.position = \"panel\",\n        plot.caption = element_text(hjust = 0))"
   },
   {
     "objectID": "PIB.html#conclusion",
     "href": "PIB.html#conclusion",
-    "title": "PIB",
+    "title": "GDP",
     "section": "Conclusion",
     "text": "Conclusion\nWe can see that the Colombian GDP is exposing signals of recovering from the pandemic shock. In the last quarters the growth is significant and positive but for now not enough for the expectation of 3% or higher displayed a decade before."
   }
