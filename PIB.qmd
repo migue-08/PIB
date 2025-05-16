@@ -1,6 +1,6 @@
 ---
-title: "PIB"
-subtitle: "Tasas de crecimiento anuales y trimestrales"
+title: "GDP"
+subtitle: "Annual and quarterly growth rates"
 author: "Miguel Martinez"
 date: today
 format: 
