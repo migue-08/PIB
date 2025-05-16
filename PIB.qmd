@@ -27,7 +27,7 @@ library(tidyverse)
 
 ```{r}
 
-data = read_excel("PIB trimestral_2020_2024.xlsx")
+data = read_excel("PIB trimestral_2020_2025.xlsx")
 
 data
 ```
