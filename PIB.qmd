@@ -78,7 +78,8 @@ df2 = df2 |>
 # Quarterly
 
 df1 = df1 |>
-  tidyr::pivot_longer(cols = 6:82) |>
+  tidyr::pivot_longer(cols = 6:82,
+                      values_to = "value") |>
   tidyr::fill(value) |>
   tidyr::pivot_wider(names_from = 1,
                      values_from = value) |>
@@ -91,7 +92,8 @@ df1 = df1 |>
 # Annual
 
 df2 = df2 |>
-  tidyr::pivot_longer(cols = 3:20) |>
+  tidyr::pivot_longer(cols = 3:20,
+                      values_to = "value") |>
   tidyr::pivot_wider(names_from = 1,
                      values_from = value,
                      values_fn = list) |>
