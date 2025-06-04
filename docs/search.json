@@ -32,7 +32,7 @@
     "href": "PIB.html#lengthening-data",
     "title": "GDP Colombia",
     "section": "Lengthening Data",
-    "text": "Lengthening Data\n\n# Quarterly\n\ndf1 = df1 |&gt;\n  tidyr::pivot_longer(cols = 6:82) |&gt;\n  tidyr::fill(value) |&gt;\n  tidyr::pivot_wider(names_from = 1,\n                     values_from = value) |&gt;\n  dplyr::select(Año:`Producto Interno Bruto`)\n\n\n# Annual\n\ndf2 = df2 |&gt;\n  tidyr::pivot_longer(cols = 3:20) |&gt;\n  tidyr::pivot_wider(names_from = 1,\n                     values_from = value,\n                     values_fn = list) |&gt;\n  dplyr::select(Año, `Producto interno bruto`)"
+    "text": "Lengthening Data\n\n# Quarterly\n\ndf1 = df1 |&gt;\n  tidyr::pivot_longer(cols = 6:82,\n                      values_to = \"value\") |&gt;\n  tidyr::fill(value) |&gt;\n  tidyr::pivot_wider(names_from = 1,\n                     values_from = value) |&gt;\n  dplyr::select(Año:`Producto Interno Bruto`)\n\n\n# Annual\n\ndf2 = df2 |&gt;\n  tidyr::pivot_longer(cols = 3:20,\n                      values_to = \"value\") |&gt;\n  tidyr::pivot_wider(names_from = 1,\n                     values_from = value,\n                     values_fn = list) |&gt;\n  dplyr::select(Año, `Producto interno bruto`)"
   },
   {
     "objectID": "PIB.html#d-type-transformation",
