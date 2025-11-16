@@ -23,6 +23,7 @@ The first step is loading the required packages:
 
 library(readxl)
 library(tidyverse)
+library(janitor)
 
 ```
 
@@ -32,9 +33,9 @@ library(tidyverse)
 
 # Original quarterly data
 
-df1 = readxl::read_excel("anex-ProduccionConstantes-Itrim2025.xlsx",
+df1 = readxl::read_excel("anex-ProduccionConstantes-IItrim2025.xlsx",
                          sheet = "Cuadro 1",
-                         range = "C45:CF62",
+                         range = "C45:CG62",
                          col_names = FALSE)
 
 # Annual data
@@ -52,12 +53,12 @@ df2 = readxl::read_excel("anex-CuentasNalANuales-AgreMacroeconomicos-2023p.xlsx"
 
 # Quarterly
 
-df1[1, 1] = "Año"
-df1[2, 1] = "Trimestre"
+df1[1, 1] = "ano"
+df1[2, 1] = "trimestre"
 
 # Annual
 
-df2[1, 1] = "Año"
+df2[1, 1] = "ano"
 df2[1, 20] = "2023"
 ```
 
@@ -78,12 +79,13 @@ df2 = df2 |>
 # Quarterly
 
 df1 = df1 |>
-  tidyr::pivot_longer(cols = 6:82,
+  tidyr::pivot_longer(cols = 6:83,
                       values_to = "value") |>
   tidyr::fill(value) |>
   tidyr::pivot_wider(names_from = 1,
                      values_from = value) |>
-  dplyr::select(Año:`Producto Interno Bruto`)
+  janitor::clean_names() |>
+  dplyr::select(ano:producto_interno_bruto)
 
 ```
 
@@ -97,7 +99,8 @@ df2 = df2 |>
   tidyr::pivot_wider(names_from = 1,
                      values_from = value,
                      values_fn = list) |>
-  dplyr::select(Año, `Producto interno bruto`)
+  janitor::clean_names() |>
+  dplyr::select(ano, producto_interno_bruto)
 
 ```
 
@@ -117,7 +120,7 @@ df1 = df1 |>
 # Please notice that some years have strings, so we need to replace them first
 
 años = df1 |>
-  dplyr::distinct(Año)
+  dplyr::distinct(ano)
 
 años$Año
 
@@ -129,8 +132,8 @@ años$Año
 
 df1 = df1 |>
   dplyr::mutate(
-    Año =  stringr::str_remove_all(Año, "[pr]"),
-    Año = as.numeric(Año))
+    ano =  stringr::str_remove_all(ano, "[pr]"),
+    ano = as.numeric(ano))
 
 glimpse(df1)
 
@@ -153,7 +156,7 @@ df2
 # We filter quarterly data from 2020
 
 df1 = df1 |>
-  dplyr::filter(Año >= 2020)
+  dplyr::filter(ano >= 2020)
 
 ```
 
@@ -164,11 +167,11 @@ df1 = df1 |>
 dashline = 0   # Baseline
 
 df1 |> 
-  ggplot(aes(x = Trimestre, y = `Producto Interno Bruto`, group = 1)) +
+  ggplot(aes(x = trimestre, y = producto_interno_bruto, group = 1)) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = dashline, color = "black", linewidth = 0.5, linetype = 2) +
-  facet_grid( . ~ Año) +
+  facet_grid( . ~ ano) +
   theme_classic() +
   labs(title = "Producto Interno Bruto (PIB)",
        subtitle = "Tasas de crecimiento anual en volumen",
@@ -188,7 +191,7 @@ dashline = 0       # Baseline
 shadedarea = 2020  # Year of interest
 
 df2 |> 
-  ggplot(aes(x = Año, y = `Producto interno bruto`)) +
+  ggplot(aes(x = ano, y = producto_interno_bruto)) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = dashline, color = "black", linewidth = 0.5, linetype = 2) +
