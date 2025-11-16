@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Miguel Martinez">
-<meta name="dcterms.date" content="2025-06-04">
+<meta name="dcterms.date" content="2025-11-15">
 
 <title>GDP Colombia</title>
 <style>
@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 4, 2025</p>
+      <p class="date">November 15, 2025</p>
     </div>
   </div>
   
@@ -174,16 +174,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The first step is loading the required packages:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="load-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-data">Load data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Original quarterly data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"anex-ProduccionConstantes-Itrim2025.xlsx"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"anex-ProduccionConstantes-IItrim2025.xlsx"</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sheet =</span> <span class="st">"Cuadro 1"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">range =</span> <span class="st">"C45:CF62"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">range =</span> <span class="st">"C45:CG62"</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Annual data</span></span>
@@ -199,12 +200,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quarterly</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df1[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"Año"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df1[<span class="dv">2</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"Trimestre"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df1[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"ano"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df1[<span class="dv">2</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"trimestre"</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Annual</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df2[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"Año"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df2[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">=</span> <span class="st">"ano"</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>df2[<span class="dv">1</span>, <span class="dv">20</span>] <span class="ot">=</span> <span class="st">"2023"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -223,12 +224,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quarterly</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">=</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">82</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">83</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">fill</span>(value) <span class="sc">|&gt;</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="dv">1</span>,</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Año<span class="sc">:</span><span class="st">`</span><span class="at">Producto Interno Bruto</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(ano<span class="sc">:</span>producto_interno_bruto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Annual</span></span>
@@ -239,7 +241,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="dv">1</span>,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> value,</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_fn =</span> list) <span class="sc">|&gt;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Año, <span class="st">`</span><span class="at">Producto interno bruto</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(ano, producto_interno_bruto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="d-type-transformation" class="level2">
@@ -254,13 +257,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please notice that some years have strings, so we need to replace them first</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>años <span class="ot">=</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(Año)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(ano)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>años<span class="sc">$</span>Año</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "2006"   "2007"   "2008"   "2009"   "2010"   "2011"   "2012"   "2013"  
- [9] "2014"   "2015"   "2016"   "2017"   "2018"   "2019"   "2020"   "2021"  
-[17] "2022"   "2023p"  "2024pr" "2025pr"</code></pre>
+<pre><code>NULL</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -268,31 +269,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">=</span> df1 <span class="sc">|&gt;</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Año <span class="ot">=</span>  stringr<span class="sc">::</span><span class="fu">str_remove_all</span>(Año, <span class="st">"[pr]"</span>),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    Año <span class="ot">=</span> <span class="fu">as.numeric</span>(Año))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ano =</span>  stringr<span class="sc">::</span><span class="fu">str_remove_all</span>(ano, <span class="st">"[pr]"</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ano =</span> <span class="fu">as.numeric</span>(ano))</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 77
+<pre><code>Rows: 78
 Columns: 18
-$ Año                                                                                                                                                                                                                                                                            &lt;dbl&gt; …
-$ Trimestre                                                                                                                                                                                                                                                                      &lt;chr&gt; …
-$ `NA`                                                                                                                                                                                                                                                                           &lt;chr&gt; …
-$ `Agricultura, ganadería, caza, silvicultura y pesca`                                                                                                                                                                                                                           &lt;dbl&gt; …
-$ `Explotación de minas y canteras`                                                                                                                                                                                                                                              &lt;dbl&gt; …
-$ `Industrias manufactureras`                                                                                                                                                                                                                                                    &lt;dbl&gt; …
-$ `Suministro de electricidad, gas, vapor y aire acondicionado; Distribución de agua; evacuación y tratamiento de aguas residuales, gestión de desechos y actividades de saneamiento ambiental`                                                                                  &lt;dbl&gt; …
-$ Construcción                                                                                                                                                                                                                                                                   &lt;dbl&gt; …
-$ `Comercio al por mayor y al por menor; reparación de vehículos automotores y motocicletas; Transporte y almacenamiento; Alojamiento y servicios de comida`                                                                                                                     &lt;dbl&gt; …
-$ `Información y comunicaciones`                                                                                                                                                                                                                                                 &lt;dbl&gt; …
-$ `Actividades financieras y de seguros`                                                                                                                                                                                                                                         &lt;dbl&gt; …
-$ `Actividades inmobiliarias`                                                                                                                                                                                                                                                    &lt;dbl&gt; …
-$ `Actividades profesionales, científicas y técnicas; Actividades de servicios administrativos y de apoyo`                                                                                                                                                                       &lt;dbl&gt; …
-$ `Administración pública y defensa; planes de seguridad social de afiliación obligatoria; Educación; Actividades de atención de la salud humana y de servicios sociales`                                                                                                        &lt;dbl&gt; …
-$ `Actividades artísticas, de entretenimiento y recreación y otras actividades de servicios; Actividades de los hogares individuales en calidad de empleadores; actividades no diferenciadas de los hogares individuales como productores de bienes y servicios para uso propio` &lt;dbl&gt; …
-$ `Valor agregado bruto`                                                                                                                                                                                                                                                         &lt;dbl&gt; …
-$ `Impuestos menos subvenciones sobre los productos`                                                                                                                                                                                                                             &lt;dbl&gt; …
-$ `Producto Interno Bruto`                                                                                                                                                                                                                                                       &lt;dbl&gt; …</code></pre>
+$ ano                                                                                                                                                                                                                                                                       &lt;dbl&gt; …
+$ trimestre                                                                                                                                                                                                                                                                 &lt;chr&gt; …
+$ na                                                                                                                                                                                                                                                                        &lt;chr&gt; …
+$ agricultura_ganaderia_caza_silvicultura_y_pesca                                                                                                                                                                                                                           &lt;dbl&gt; …
+$ explotacion_de_minas_y_canteras                                                                                                                                                                                                                                           &lt;dbl&gt; …
+$ industrias_manufactureras                                                                                                                                                                                                                                                 &lt;dbl&gt; …
+$ suministro_de_electricidad_gas_vapor_y_aire_acondicionado_distribucion_de_agua_evacuacion_y_tratamiento_de_aguas_residuales_gestion_de_desechos_y_actividades_de_saneamiento_ambiental                                                                                    &lt;dbl&gt; …
+$ construccion                                                                                                                                                                                                                                                              &lt;dbl&gt; …
+$ comercio_al_por_mayor_y_al_por_menor_reparacion_de_vehiculos_automotores_y_motocicletas_transporte_y_almacenamiento_alojamiento_y_servicios_de_comida                                                                                                                     &lt;dbl&gt; …
+$ informacion_y_comunicaciones                                                                                                                                                                                                                                              &lt;dbl&gt; …
+$ actividades_financieras_y_de_seguros                                                                                                                                                                                                                                      &lt;dbl&gt; …
+$ actividades_inmobiliarias                                                                                                                                                                                                                                                 &lt;dbl&gt; …
+$ actividades_profesionales_cientificas_y_tecnicas_actividades_de_servicios_administrativos_y_de_apoyo                                                                                                                                                                      &lt;dbl&gt; …
+$ administracion_publica_y_defensa_planes_de_seguridad_social_de_afiliacion_obligatoria_educacion_actividades_de_atencion_de_la_salud_humana_y_de_servicios_sociales                                                                                                        &lt;dbl&gt; …
+$ actividades_artisticas_de_entretenimiento_y_recreacion_y_otras_actividades_de_servicios_actividades_de_los_hogares_individuales_en_calidad_de_empleadores_actividades_no_diferenciadas_de_los_hogares_individuales_como_productores_de_bienes_y_servicios_para_uso_propio &lt;dbl&gt; …
+$ valor_agregado_bruto                                                                                                                                                                                                                                                      &lt;dbl&gt; …
+$ impuestos_menos_subvenciones_sobre_los_productos                                                                                                                                                                                                                          &lt;dbl&gt; …
+$ producto_interno_bruto                                                                                                                                                                                                                                                    &lt;dbl&gt; …</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -304,26 +305,26 @@ $ `Producto Interno Bruto`                                                      
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 18 × 2
-     Año `Producto interno bruto`
-   &lt;dbl&gt;                    &lt;dbl&gt;
- 1  2006                    6.72 
- 2  2007                    6.74 
- 3  2008                    3.28 
- 4  2009                    1.14 
- 5  2010                    4.49 
- 6  2011                    6.95 
- 7  2012                    3.91 
- 8  2013                    5.13 
- 9  2014                    4.50 
-10  2015                    2.96 
-11  2016                    2.09 
-12  2017                    1.36 
-13  2018                    2.56 
-14  2019                    3.19 
-15  2020                   -7.19 
-16  2021                   10.8  
-17  2022                    7.33 
-18  2023                    0.712</code></pre>
+     ano producto_interno_bruto
+   &lt;dbl&gt;                  &lt;dbl&gt;
+ 1  2006                  6.72 
+ 2  2007                  6.74 
+ 3  2008                  3.28 
+ 4  2009                  1.14 
+ 5  2010                  4.49 
+ 6  2011                  6.95 
+ 7  2012                  3.91 
+ 8  2013                  5.13 
+ 9  2014                  4.50 
+10  2015                  2.96 
+11  2016                  2.09 
+12  2017                  1.36 
+13  2018                  2.56 
+14  2019                  3.19 
+15  2020                 -7.19 
+16  2021                 10.8  
+17  2022                  7.33 
+18  2023                  0.712</code></pre>
 </div>
 </div>
 </section>
@@ -333,7 +334,7 @@ $ `Producto Interno Bruto`                                                      
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We filter quarterly data from 2020</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">=</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Año <span class="sc">&gt;=</span> <span class="dv">2020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(ano <span class="sc">&gt;=</span> <span class="dv">2020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="quarterly" class="level2">
@@ -342,11 +343,11 @@ $ `Producto Interno Bruto`                                                      
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dashline <span class="ot">=</span> <span class="dv">0</span>   <span class="co"># Baseline</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">|&gt;</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Trimestre, <span class="at">y =</span> <span class="st">`</span><span class="at">Producto Interno Bruto</span><span class="st">`</span>, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trimestre, <span class="at">y =</span> producto_interno_bruto, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> dashline, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>( . <span class="sc">~</span> Año) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>( . <span class="sc">~</span> ano) <span class="sc">+</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Producto Interno Bruto (PIB)"</span>,</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Tasas de crecimiento anual en volumen"</span>,</span>
@@ -371,7 +372,7 @@ $ `Producto Interno Bruto`                                                      
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>shadedarea <span class="ot">=</span> <span class="dv">2020</span>  <span class="co"># Year of interest</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df2 <span class="sc">|&gt;</span> </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Año, <span class="at">y =</span> <span class="st">`</span><span class="at">Producto interno bruto</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ano, <span class="at">y =</span> producto_interno_bruto)) <span class="sc">+</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> dashline, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
